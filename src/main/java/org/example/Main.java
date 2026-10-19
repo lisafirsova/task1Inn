@@ -6,32 +6,22 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.entity.ArrayInt;
 import org.example.exception.ArrayException;
-import org.example.fabric.ArrayFactory;
-import org.example.parse.Parser;
-import org.example.read.ArrayReader;
-import org.example.service.SortingAlgorithms;
-import org.example.validation.Validator;
+import org.example.factory.ArrayFactoryImpl;
+import org.example.parse.ParserImpl;
+import org.example.read.ArrayReaderImpl;
+import org.example.service.impl.SortingAlgorithmsImpl;
+import org.example.validation.ValidatorImpl;
 
 
 public class Main {
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
 
     void main() throws ArrayException {
-        ArrayReader reader = new ArrayReader();
-        Validator validator = new Validator();
-        Parser parser = new Parser();
-        ArrayFactory factory = new ArrayFactory();
-        SortingAlgorithms sortService = new SortingAlgorithms();
+        ArrayReaderImpl reader = new ArrayReaderImpl();
+        ValidatorImpl validatorImpl = new ValidatorImpl();
+        ParserImpl parserImpl = new ParserImpl();
+        ArrayFactoryImpl factory = new ArrayFactoryImpl();
+        SortingAlgorithmsImpl sortService = new SortingAlgorithmsImpl();
         List<String> lines = reader.readLinesForArray();
-        for (String line : lines) {
-            if (validator.isValid(line)) {
-                int[] numbers = parser.parseArray(line);
-                ArrayInt array = factory.create(numbers);
-                ArrayInt sorted = sortService.quickSort(array);
-                LOGGER.info("Sorted: {}", sorted);
-            } else {
-                LOGGER.warn("Line rejected: '{}'", line);
-            }
-        }
     }
 }
